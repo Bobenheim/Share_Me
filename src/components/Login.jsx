@@ -1,12 +1,14 @@
 import React from 'react'
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
 
+
 const Login = () => {
+  const user = false;
  const responseGoogle = (response) => {
   localStorage.setItem('user', JSON.stringify(response.profileObj));
 
@@ -27,7 +29,7 @@ const Login = () => {
           src={shareVideo}
           type="video/mp4"
           loop
-          control={false}
+          control="false"
           muted
           autoPlay
           className="w-full h-full object-cover"
@@ -37,22 +39,16 @@ const Login = () => {
             <img src={logo} width="130px" alt="logo" />
           </div>
           <div className="shadow-2xl">
-            <GoogleLogin 
-              clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
-              render={(renderProps) => (
-                <button
-                  type="button"
-                  className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  >
-                    <FcGoogle className="mr-4" /> Sign in with Google
-                </button>
+            <div>
+              {user ? (
+                <div>Logged In</div>
+              ) : (
+                <GoogleLogin
+                  onSuccess={(response) => console.log(response)}
+                  onError={() => console.log('Error')}
+                />
               )}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
-            />
+            </div>
           </div>
         </div>
       </div>
